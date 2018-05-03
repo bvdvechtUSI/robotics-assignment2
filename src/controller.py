@@ -12,6 +12,10 @@ from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 from std_srvs.srv import Empty
 
+from visualization_msgs.msg import Marker
+from geometry_msgs.msg import Quaternion, Pose, Point, Vector3
+from std_msgs.msg import Header, ColorRGBA
+
 import math
 
 # a handy tool to convert orientations
@@ -61,7 +65,7 @@ class BasicThymio:
         self.rate = rospy.Rate(self.tick_rate)
 
         self.vel_msg = Twist()
-
+        
     def update_prox_center(self, data):
         self.current_prox_center = data
     def update_prox_center_left(self, data):
@@ -188,7 +192,7 @@ class BasicThymio:
         else:
             ang_vel = -0.1
         
-        while abs(self.current_prox_left.range - self.current_prox_right.range) > 0.005:
+        while abs(self.current_prox_center_left.range - self.current_prox_center_right.range) > 0.005:
             self.vel_msg.angular.z = ang_vel
             self.velocity_publisher.publish(self.vel_msg)
             self.rate.sleep()
@@ -278,6 +282,6 @@ if __name__ == '__main__':
     #thymio.thymio_state_service_request([0.,0.,0.], [0.,0.,0.])
     #rospy.sleep(1.)
 
-    # thymio.task1()
+    thymio.task1()
     # thymio.task2()
-    thymio.task3()
+    # thymio.task3()
